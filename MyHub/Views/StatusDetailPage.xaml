@@ -1,0 +1,155 @@
+﻿<local:BasePage
+    x:Class="MyHub.Views.StatusDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MyHub.Controls"
+    mc:Ignorable="d"
+    x:Name="rootPage">
+
+    <Grid Background="{StaticResource MyHubPageBackgroundColorBrush}" 
+          MinWidth="{StaticResource RightPartMinWidth}" >
+        <RelativePanel>
+            <!--顶部基本信息-->
+            <RelativePanel x:Name="titleBarRelativePanel" 
+                           RelativePanel.AlignTopWithPanel="True" 
+                           RelativePanel.AlignLeftWithPanel="True" 
+                           RelativePanel.AlignRightWithPanel="True" 
+                           Height="{StaticResource TitleBarHeight}">
+                <AppBarButton x:Name="backAppBarButton" Icon="Back"
+                              RelativePanel.AlignLeftWithPanel="True"
+                              RelativePanel.AlignVerticalCenterWithPanel="True"
+                              Command="{Binding BackCommand}"/>
+                <TextBlock x:Name="userNameTextBlock" Style="{StaticResource PageTitleTextBlockStyle}" 
+                           Text="新鲜事正文" 
+                           RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <AppBarButton x:Name="moreAppBarButton" Icon="more"
+                              RelativePanel.AlignRightWithPanel="True"
+                              RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <AppBarButton.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="deleteStatusMenuFlyoutItem"
+                                            Text="删除新鲜事"
+                                            Command="{Binding DeleteStatusCommand}"
+                                            CommandParameter="{Binding Status}"/>
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </RelativePanel>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                          HorizontalScrollMode="Disabled" 
+                          VerticalScrollBarVisibility="Auto" 
+                          VerticalScrollMode="Enabled"
+                          RelativePanel.Below="titleBarRelativePanel"
+                          RelativePanel.AlignRightWithPanel="True"
+                          RelativePanel.AlignLeftWithPanel="True">
+                <RelativePanel>
+                    <!--详细信息-->
+                    <controls:StatusInfoControl x:Name="statusInfoControl"
+                                                RelativePanel.AlignTopWithPanel="True"
+                                                RelativePanel.AlignRightWithPanel="True"
+                                                RelativePanel.AlignLeftWithPanel="True"
+                                                DataContext="{Binding Status, Mode=OneWay}"
+                                                />
+
+                    <!--转发评论点赞信息的列表-->
+                    <Pivot x:Name="interactionInfoListPivot" 
+                            RelativePanel.Below="statusInfoControl"
+                            RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            Margin="0,5,0,0"
+                           SelectedIndex="1"
+                           SelectionChanged="interactionInfoListPivot_SelectionChanged">
+                        <PivotItem x:Name="repostListPivotItem">
+                            <PivotItem.Header>
+                                <TextBlock>
+                                    <Run Text="转发("/>
+                                    <Run Text="{Binding Status.RepostsCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                </TextBlock>
+                            </PivotItem.Header>
+
+                            <ListView ItemTemplate="{StaticResource StatusRepostCommentListItemDataTemplate}" 
+                                      ItemsSource="{Binding RepostList, Mode=OneWay}"
+                                      ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                                      Style="{StaticResource StatusListViewStyleTemplate}"
+                                      ItemClick="ListView_ItemClick">
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="查看原新鲜事" 
+                                                        Command="{Binding ShowStatusDetailCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedRepostItem}"/>
+                                        <MenuFlyoutItem Text="转发"
+                                                        Command="{Binding RepostStatusCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedRepostItem}"/>
+                                        <MenuFlyoutItem Text="评论"
+                                                        Command="{Binding CommentOnStatusCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedRepostItem}"/>
+                                        <MenuFlyoutItem Text="收藏"
+                                                        Command="{Binding FavoriteStatusCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedRepostItem}"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
+                            </ListView>
+                        </PivotItem>
+
+                        <PivotItem x:Name="commentListPivotItem">
+                            <PivotItem.Header>
+                                <TextBlock>
+                                    <Run Text="评论("/>
+                                    <Run Text="{Binding Status.CommentsCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                </TextBlock>
+                            </PivotItem.Header>
+
+                            <ListView ItemTemplate="{StaticResource StatusRepostCommentListItemDataTemplate}" 
+                                      ItemsSource="{Binding CommentList, Mode=OneWay}"
+                                      ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                                      Style="{StaticResource StatusListViewStyleTemplate}"
+                                      ItemClick="ListView_ItemClick">
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="回复" 
+                                                        Command="{Binding ReplyCommentCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedCommentItem}"/>
+                                        <MenuFlyoutItem Text="转发" 
+                                                        Command="{Binding RepostCommentCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedCommentItem}"/>
+                                        <MenuFlyoutItem Text="删除" 
+                                                        Command="{Binding DeleteCommentCommand}" 
+                                                        CommandParameter="{Binding CurrentSelectedCommentItem}"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
+                            </ListView>
+                        </PivotItem>
+
+                        <PivotItem x:Name="likeListPivotItem">
+                            <PivotItem.Header>
+                                <TextBlock>
+                                    <Run Text="点赞("/>
+                                    <Run Text="{Binding Status.AttitudesCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                </TextBlock>
+                            </PivotItem.Header>
+
+                            <ListView ItemTemplate="{StaticResource StatusLikeListItemDataTemplate}" 
+                                      ItemsSource="{Binding LikeList, Mode=OneWay}"
+                                      ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                                      Style="{StaticResource StatusListViewStyleTemplate}">
+                            </ListView>
+                        </PivotItem>
+                    </Pivot>
+                </RelativePanel>
+            </ScrollViewer>
+
+            <!--显示底部的按钮-->
+            <controls:StatusInteractionBottomButton RelativePanel.AlignBottomWithPanel="True"
+                                                    RelativePanel.AlignLeftWithPanel="True"
+                                                    RelativePanel.AlignRightWithPanel="True"/>
+        </RelativePanel>
+    </Grid>
+</local:BasePage>

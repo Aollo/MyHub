@@ -1,0 +1,107 @@
+﻿<local:BasePage
+    x:Class="MyHub.Views.AccountDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MyHub.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource MyHubPageBackgroundColorBrush}">
+        <RelativePanel>
+            <!--顶部基本信息-->
+            <RelativePanel x:Name="titleBarRelativePanel" 
+                           RelativePanel.AlignTopWithPanel="True" 
+                           RelativePanel.AlignLeftWithPanel="True" 
+                           RelativePanel.AlignRightWithPanel="True" 
+                           Height="{StaticResource TitleBarHeight}" >
+                <AppBarButton x:Name="backAppBarButton" Icon="Back"
+                              RelativePanel.AlignLeftWithPanel="True"
+                              RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <TextBlock x:Name="userNameTextBlock" Style="{StaticResource PageTitleTextBlockStyle}" 
+                           Text="{Binding BasicUserInfo.NickName, Source={Binding UserProfile}, Mode=OneWay}" 
+                           RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <AppBarButton x:Name="moreAppBarButton" Icon="More"
+                              RelativePanel.AlignRightWithPanel="True"
+                              RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            </RelativePanel>
+            
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" 
+                          VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto"
+                          RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                          RelativePanel.Below="titleBarRelativePanel">
+                <RelativePanel x:Name="userProfileRelativePanel">
+                    <controls:UserAccountBaseInfoControl x:Name="userAccountBaseInfoControl"
+                                                         RelativePanel.AlignLeftWithPanel="True"
+                                                         RelativePanel.AlignRightWithPanel="True"
+                                                         RelativePanel.AlignTopWithPanel="True"
+                                                         DataContext="{Binding UserProfile}"/>
+
+                    <!--显示主页的更多信息-->
+                    <Pivot RelativePanel.AlignLeftWithPanel="True" 
+                           RelativePanel.AlignRightWithPanel="True"
+                           RelativePanel.Below="userAccountBaseInfoControl"
+                           SelectedIndex="1"
+                           SelectionChanged="Pivot_SelectionChanged" >
+                        <PivotItem Header="我的主页">
+                            <RelativePanel>
+                                <StackPanel x:Name="userBaseInfoStackPanel"
+                                            Orientation="Vertical" 
+                                            RelativePanel.AlignLeftWithPanel="True" 
+                                            RelativePanel.AlignRightWithPanel="True"
+                                            RelativePanel.AlignTopWithPanel="True"
+                                            DataContext="{Binding UserProfile, Mode=OneWay}">
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16">
+                                            <Run Text="性别："/>
+                                            <Run Text="{Binding Gender}"/>
+                                    </TextBlock>
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16">
+                                            <Run Text="所在地："/>
+                                            <Run Text="{Binding Location}"/>
+                                    </TextBlock>
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16">
+                                            <Run Text="个人描述："/>
+                                            <Run Text="{Binding Description}"/>
+                                    </TextBlock>
+                                    <Button Content="更多个人信息" FontSize="16" HorizontalAlignment="Stretch"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Vertical"
+                                            RelativePanel.AlignLeftWithPanel="True" 
+                                            RelativePanel.AlignRightWithPanel="True"
+                                            RelativePanel.Below="userBaseInfoStackPanel"
+                                            Margin="0,20,0,0">
+                                    <TextBlock Text="我的好友列表:" FontSize="20"/>
+                                    <ListView ItemTemplate="{StaticResource UserFriendListItemDataTemplate}" 
+                                              ItemsSource="{Binding FriendList, Mode=OneWay}" 
+                                              ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                                              Style="{StaticResource StatusListViewStyleTemplate}"
+                                              ItemClick="ListView_ItemClick">
+                                    </ListView>
+                                    <Button Content="更多好友信息" FontSize="16" HorizontalAlignment="Stretch"/>
+                                </StackPanel>
+                            </RelativePanel>
+                        </PivotItem>
+
+                        <PivotItem Header="我的新鲜事">
+                            <ListView ItemsSource="{Binding HomeStatusList, Mode=OneWay}" 
+                                      ItemTemplate="{StaticResource StatusListItemDataTemplate}"
+                                      ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                                      Style="{StaticResource StatusListViewStyleTemplate}" 
+                                      ItemClick="ListView_ItemClick">
+                            </ListView>
+                        </PivotItem>
+
+                        <PivotItem Header="我的相册">
+
+                        </PivotItem>
+
+                    </Pivot>
+                </RelativePanel>
+            </ScrollViewer>
+
+        </RelativePanel>
+    </Grid>
+</local:BasePage>

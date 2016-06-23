@@ -1,0 +1,35 @@
+﻿<local:BasePage
+    x:Class="MyHub.Views.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource MyHubPageBackgroundColorBrush}">
+        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Viewbox Height="100" x:Name="headerImage" RelativePanel.AlignHorizontalCenterWithPanel="True">
+                <SymbolIcon Symbol="GoToStart"/>
+            </Viewbox>
+            <ItemsControl RelativePanel.Below="headerImage">
+                <ItemsControl.ItemContainerTransitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition IsStaggeringEnabled="True" FromVerticalOffset="100"/>
+                    </TransitionCollection>
+                </ItemsControl.ItemContainerTransitions>
+
+                <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
+                    <Run Text="应用程序版本: " x:Uid="AppVersionTitleTb" />
+                    <Run Text="1.0" />
+                </TextBlock>
+
+                <Button Margin="0,6,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Copy"/>
+                    </StackPanel>
+                </Button>
+            </ItemsControl>
+        </RelativePanel>
+    </Grid>
+</local:BasePage>

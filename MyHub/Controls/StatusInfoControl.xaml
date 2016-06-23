@@ -1,0 +1,81 @@
+﻿<UserControl
+    x:Class="MyHub.Controls.StatusInfoControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+
+    <RelativePanel HorizontalAlignment="Stretch" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <local:StatusBaseInfoControl x:Name="statusBaseInfoControl" 
+                                        RelativePanel.AlignLeftWithPanel="True" 
+                                        RelativePanel.AlignRightWithPanel="True" 
+                                        RelativePanel.AlignTopWithPanel="True"/>
+        
+        <RelativePanel x:Name="statusContentControl" RelativePanel.Below="statusBaseInfoControl" 
+                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <TextBlock x:Name="statusContentTextBlock" Text="{Binding Content}" 
+                       Style="{StaticResource StatusContentTextBlockStyle}" 
+                       RelativePanel.AlignLeftWithPanel="True" 
+                       RelativePanel.AlignRightWithPanel="True" 
+                       DataContextChanged="statusContentTextBlock_DataContextChanged"/>
+            <GridView RelativePanel.Below="statusContentTextBlock" 
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      ItemsSource="{Binding PictureUrls}" 
+                      Visibility="{Binding PictureUrls, Converter={StaticResource NullToVisibilityConverter}}"
+                      SelectionMode="None"
+                      IsItemClickEnabled="True">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}" 
+                               Width="{StaticResource StatusPictureWidthHeight}" 
+                               Height="{StaticResource StatusPictureWidthHeight}"
+                               Stretch="UniformToFill"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </RelativePanel>
+
+        <RelativePanel x:Name="retweetedStatusContentControl" 
+                       RelativePanel.Below="statusContentControl" 
+                       RelativePanel.AlignLeftWithPanel="True" 
+                       RelativePanel.AlignRightWithPanel="True" 
+                       Background="LightGray"
+                       Visibility="{Binding RetweetedStatus, Converter={StaticResource NullToVisibilityConverter}}">
+            <TextBlock x:Name="retweetedStatusTextBlock" 
+                       Style="{StaticResource StatusContentTextBlockStyle}" 
+                       RelativePanel.AlignLeftWithPanel="True" 
+                       RelativePanel.AlignRightWithPanel="True"
+                       DataContextChanged="retweetedStatusTextBlock_DataContextChanged">
+                <Hyperlink UnderlineStyle="None" NavigateUri="">
+                    <Run Text="@"/>
+                    <Run Text="{Binding RetweetedStatus.Author.NickName}"/>
+                    <Run Text=":"/>
+                </Hyperlink>
+                <Run x:Name="testRun" Text="{Binding RetweetedStatus.Content}"/>
+            </TextBlock>
+            <GridView RelativePanel.Below="retweetedStatusTextBlock"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      ItemsSource="{Binding RetweetedStatus.PictureUrls}" 
+                      Visibility="{Binding RetweetedStatus.PictureUrls, Converter={StaticResource NullToVisibilityConverter}}"
+                      SelectionMode="None"
+                      IsItemClickEnabled="True">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}" 
+                               Width="{StaticResource StatusPictureWidthHeight}" 
+                               Height="{StaticResource StatusPictureWidthHeight}"
+                               Stretch="UniformToFill"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </RelativePanel>
+    </RelativePanel>
+    
+</UserControl>

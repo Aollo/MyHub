@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using MyHub.Unity;
 
 namespace MyHub
 {
@@ -28,6 +29,9 @@ namespace MyHub
         /// </summary>
         public App()
         {
+            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+                Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
@@ -45,6 +49,8 @@ namespace MyHub
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            MyHubInitialize();// 自己的初始化
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // 不要在窗口已包含内容时重复应用程序初始化，
@@ -72,7 +78,16 @@ namespace MyHub
                     // 当导航堆栈尚未还原时，导航到第一页，
                     // 并通过将所需信息作为导航参数传入来配置
                     // 参数
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+
+                    // 根据获取到的是否存在账户可用的结果导航到不同页面
+                    if (AccountVerify())// 存在可用账户
+                    {
+                        rootFrame.Navigate(typeof(Views.MainPage), e.Arguments);
+                    }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(Views.WelcomePage), e.Arguments);
+                    }
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
@@ -101,6 +116,46 @@ namespace MyHub
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
+        }
+
+
+        /// <summary>
+        /// 执行一些应用程序初始化工作
+        /// </summary>
+        private void MyHubInitialize()
+        {
+            // 初始化Unity相关
+            UnityBootstrapper.Init();
+            UnityBootstrapper.ConfigureRegistries();
+        }
+
+        /// <summary>
+        /// 验证在本地数据库中是否有账户可用
+        /// </summary>
+        /// <returns></returns>
+        private bool AccountVerify()
+        {
+            bool result = false;
+
+            var service = 
+                Microsoft.Practices.ServiceLocation.
+                ServiceLocator.Current.GetInstance<Services.ILocalDataService>();
+
+            var allAccounts = service.LoadAllAccounts();// 获取所有的账户，包括已登录、没有过期但没有登录、账户过期的账户
+            allAccounts.ForEach(i => 
+            {
+                if(i.isAvailable)// 已登录
+                {
+                    Lifecycle.AppRuntimeEnvironment.Instance.SetUserAccount(i);
+                    result = true;
+                }
+                else if(i.ExpiresIn > DateTime.Now)// 没有登录但没有过期
+                {
+                    Lifecycle.AppRuntimeEnvironment.Instance.SetUserAccountUnlogin(i);
+                }
+            });
+
+            return result;
         }
     }
 }

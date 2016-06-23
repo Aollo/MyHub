@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{05d723a1-c80c-47be-90c5-f9085e8c575e}</ProjectGuid>
+    <ProjectGuid>{05D723A1-C80C-47BE-90C5-F9085E8C575E}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyHub</RootNamespace>
@@ -16,9 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    
     <PackageCertificateKeyFile>MyHub_TemporaryKey.pfx</PackageCertificateKeyFile>
-    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -91,24 +89,215 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="ComponentModel\IncrementalLoadingCollection.cs" />
+    <Compile Include="ComponentModel\ObservableObjectBase.cs" />
+    <Compile Include="Controls\NavigationBar\AccountCenterNavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavigationBar\ExploreNavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavigationBar\HomeNavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavigationBar\INavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavigationBar\NavigationBarMenuItemBase.cs" />
+    <Compile Include="Controls\NavigationBar\NotificationCenterNavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavigationBar\PostStatusNavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavigationBar\SettingCenterNavigationBarMenuItem.cs" />
+    <Compile Include="Controls\NavMenuListView.cs" />
+    <Compile Include="Controls\NotificationMessageControl.xaml.cs">
+      <DependentUpon>NotificationMessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RepostCommentListItem.xaml.cs">
+      <DependentUpon>RepostCommentListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusBaseInfoControl.xaml.cs">
+      <DependentUpon>StatusBaseInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusInfoControl.xaml.cs">
+      <DependentUpon>StatusInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusInteractionBottomButton.xaml.cs">
+      <DependentUpon>StatusInteractionBottomButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserAccountBaseInfoControl.xaml.cs">
+      <DependentUpon>UserAccountBaseInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Facade\INavigationFacade.cs" />
+    <Compile Include="Facade\NavigationFacade.cs" />
+    <Compile Include="Lifecycle\AppRuntimeEnvironment.cs" />
+    <Compile Include="Lifecycle\Constant.cs" />
+    <Compile Include="Lifecycle\IAppRuntimeEnvironment.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\BasicNotificationMessage.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Favorite.cs" />
+    <Compile Include="Models\FavoriteTag.cs" />
+    <Compile Include="Models\Kaixin\KaixinDeleteRecordEntity.cs" />
+    <Compile Include="Models\Kaixin\KaixinHotTopicsEntity.cs" />
+    <Compile Include="Models\Kaixin\KaixinLikeCheckEntity.cs" />
+    <Compile Include="Models\Kaixin\KaixinMessageSummaryEntity.cs" />
+    <Compile Include="Models\LocalDB\AccountTableEntity.cs" />
+    <Compile Include="Models\LocalDB\ActionHistoryTableEntity.cs" />
+    <Compile Include="Models\LocalDB\ActionTypeTableEntity.cs" />
+    <Compile Include="Models\LocalDB\SnsTypeTableEntity.cs" />
+    <Compile Include="Models\LocalDB\UserSettingTableEntity.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Remind.cs" />
+    <Compile Include="Models\SnsType.cs" />
+    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\UserSetting.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsAboutMe.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsByMe.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsCreate.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsDestroy.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsMentions.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsReply.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdCommentsToMe.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdFavoriteCreate.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdEmotions.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdFavoriteDestroy.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdFriendList.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdFriendshipsFollowers.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdFriendshipsFriendsInCommon.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdGetFavoritesList.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdLocalPublicTimelines.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdMentionsStatus.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdNearbyPois.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdPublicTimelines.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdRegisterVerifyNickname.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdRemindClearCount.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdRemindUnreadCount.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdReportTimeline.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdSearchPoisByLocation.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdSearchStatusWithTopic.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdSearchSuggestionUsers.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdShorturlExpand.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdShowComment.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdStatusesDestroy.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdStatusesFilterCreate.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdStatusesMentionsShield.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdStatusesReport.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdTrends.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdUrlExpand.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdUserHomeTimeline.cs" />
+    <Compile Include="Models\Weibo\CmdModels\CmdUsersShow.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboEmotionsEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboFavoriteStatusEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboGeoEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboPositionEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboTrendsEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboReportsListEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboPrivacyEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboRemindEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboSearchSuggestionsAtUsersEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboUrlEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboFriendshipsEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboStatusesEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboUserEntity.cs" />
+    <Compile Include="Models\Weibo\Entities\WeiboCommentEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IAuthorizationService.cs" />
+    <Compile Include="Services\ILocalDataService.cs" />
+    <Compile Include="Services\ISnsDataService.cs" />
+    <Compile Include="Services\KaixinSnsAuthorization.cs" />
+    <Compile Include="Services\KaixinSnsDataAccessMethods.cs" />
+    <Compile Include="Services\KaixinSnsDataService.cs" />
+    <Compile Include="Services\LocalDataAccessMethods.cs" />
+    <Compile Include="Services\LocalDataService.cs" />
+    <Compile Include="Services\WeiboSnsAuthorization.cs" />
+    <Compile Include="Services\WeiboSnsDataAccessMethods.cs" />
+    <Compile Include="Services\WeiboSnsDataService.cs" />
+    <Compile Include="Tools\JsonHelper.cs" />
+    <Compile Include="Tools\TimeConverter.cs" />
+    <Compile Include="Unity\IRegistry.cs" />
+    <Compile Include="Unity\RegistryBase.cs" />
+    <Compile Include="Unity\ServiceLocatorExtensions.cs" />
+    <Compile Include="Unity\ServicesRegistry.cs" />
+    <Compile Include="Unity\UnityBootstrapper.cs" />
+    <Compile Include="Unity\UnityExtensions.cs" />
+    <Compile Include="ValueConverters\AccountManagementListBackgroundColorConverter.cs" />
+    <Compile Include="ValueConverters\BoolToColorConverter.cs" />
+    <Compile Include="ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
+    <Compile Include="ViewModels\AccountDetailViewModel.cs" />
+    <Compile Include="ViewModels\AccountManagementViewModel.cs" />
+    <Compile Include="ViewModels\Design\StatusViewModelDesign.cs" />
+    <Compile Include="ViewModels\ExploreViewModel.cs" />
+    <Compile Include="ViewModels\HotTopicsViewModel.cs" />
+    <Compile Include="ViewModels\LocationSelectionViewModel.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MentionUserSelectionViewModel.cs" />
+    <Compile Include="ViewModels\NotificationCenterViewModel.cs" />
+    <Compile Include="ViewModels\PostStatusViewModel.cs" />
+    <Compile Include="ViewModels\PostStatusViewModelArgs.cs" />
+    <Compile Include="ViewModels\StatusDetailViewModel.cs" />
+    <Compile Include="ViewModels\StatusHomeViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\WelcomeViewModel.cs" />
+    <Compile Include="Views\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountDetailPage.xaml.cs">
+      <DependentUpon>AccountDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountManagementPage.xaml.cs">
+      <DependentUpon>AccountManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BasePage.cs" />
+    <Compile Include="Views\ExplorePage.xaml.cs">
+      <DependentUpon>ExplorePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HotTopicsPage.xaml.cs">
+      <DependentUpon>HotTopicsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LocationSelectionPage.xaml.cs">
+      <DependentUpon>LocationSelectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\MentionUserSelectionPage.xaml.cs">
+      <DependentUpon>MentionUserSelectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyHubBlankPage.xaml.cs">
+      <DependentUpon>MyHubBlankPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotificationCenterPage.xaml.cs">
+      <DependentUpon>NotificationCenterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PostStatusPage.xaml.cs">
+      <DependentUpon>PostStatusPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingCenterPage.xaml.cs">
+      <DependentUpon>SettingCenterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatusDetailPage.xaml.cs">
+      <DependentUpon>StatusDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatusHomePage.xaml.cs">
+      <DependentUpon>StatusHomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebViewerPage.xaml.cs">
+      <DependentUpon>WebViewerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    
     <None Include="MyHub_TemporaryKey.pfx" />
-    
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -125,16 +314,126 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Controls\NotificationMessageControl.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RepostCommentListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StatusBaseInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StatusInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StatusInteractionBottomButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UserAccountBaseInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Properties\DesignTimeResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="Style\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AccountDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AccountManagementPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExplorePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HotTopicsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LocationSelectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MentionUserSelectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyHubBlankPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NotificationCenterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostStatusPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingCenterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatusDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatusHomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WebViewerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="KaixinSDK">
+      <HintPath>Packages\Kaixin\KaixinSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>Packages\Weibo\RestSharp.winmd</HintPath>
+    </Reference>
+    <Reference Include="WeiboSDKForWinRT">
+      <HintPath>Packages\Weibo\WeiboSDKForWinRT.winmd</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.13.0">
+      <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
-
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

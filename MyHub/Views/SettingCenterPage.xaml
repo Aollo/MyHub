@@ -1,0 +1,37 @@
+﻿<local:BasePage
+    x:Class="MyHub.Views.SettingCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource MyHubPageBackgroundColorBrush}">
+        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Viewbox Height="80" x:Name="headerImage"
+                     RelativePanel.AlignHorizontalCenterWithPanel="True">
+                <SymbolIcon Symbol="Setting" />
+            </Viewbox>
+            <ItemsControl ItemsSource="{Binding AuthenticationProviders}"
+                          RelativePanel.Below="headerImage"
+                          Margin="0,12,0,0" IsTabStop="False">
+                <ItemsControl.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,0,0,12" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    </Style>
+                </ItemsControl.Resources>
+
+                <ItemsControl.ItemContainerTransitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition IsStaggeringEnabled="True"
+                                                 FromVerticalOffset="100" />
+                    </TransitionCollection>
+                </ItemsControl.ItemContainerTransitions>
+                <Button Content="隐私策略"  />
+                <Button Content="关于MyHub" Click="Button_Click"/>
+            </ItemsControl>
+        </RelativePanel>
+    </Grid>
+</local:BasePage>

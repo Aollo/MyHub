@@ -1,0 +1,38 @@
+﻿<local:BasePage
+    x:Class="MyHub.Views.AccountManagementPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MyHub.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource MyHubPageBackgroundColorBrush }"
+          MaxWidth="{StaticResource RightPartMaxWidth}"
+          MinWidth="{StaticResource RightPartMinWidth}" 
+          x:Name="rootLayout">
+        <RelativePanel>
+            <!--顶部基本信息-->
+            <RelativePanel x:Name="titleBarRelativePanel" 
+                           RelativePanel.AlignTopWithPanel="True" 
+                           RelativePanel.AlignLeftWithPanel="True" 
+                           RelativePanel.AlignRightWithPanel="True" 
+                           Height="{StaticResource TitleBarHeight}" >
+                <TextBlock x:Name="titleTextBlock" Style="{StaticResource PageTitleTextBlockStyle}" 
+                           Text="我的账户" 
+                           RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            </RelativePanel>
+
+            <ListView ItemsSource="{Binding UserAccountProfileList, Mode=OneWay}"
+                      ItemTemplate="{StaticResource UserAccountListItemDataTemplate}"
+                      ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                      Style="{StaticResource StatusListViewStyleTemplate}"
+                      ItemClick="ListView_ItemClick"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.Below="titleBarRelativePanel"/>
+        </RelativePanel>
+    </Grid>
+</local:BasePage>

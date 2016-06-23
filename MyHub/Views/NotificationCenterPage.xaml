@@ -1,0 +1,92 @@
+﻿<local:BasePage
+    x:Class="MyHub.Views.NotificationCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource MyHubPageBackgroundColorBrush}" 
+          MaxWidth="{StaticResource LeftPartMaxWidth}">
+        <RelativePanel>
+            <!--顶部基本信息-->
+            <RelativePanel x:Name="titleBarRelativePanel" 
+                           RelativePanel.AlignTopWithPanel="True" 
+                           RelativePanel.AlignLeftWithPanel="True" 
+                           RelativePanel.AlignRightWithPanel="True" 
+                           Height="{StaticResource TitleBarHeight}" >
+                <TextBlock x:Name="titleTextBlock" Style="{StaticResource PageTitleTextBlockStyle}" 
+                           Text="消息中心" 
+                           RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <ComboBox x:Name="snsTypeComboBox" BorderThickness="0" Foreground="Orange" FontSize="16" 
+                          RelativePanel.AlignRightWithPanel="True" 
+                          RelativePanel.AlignVerticalCenterWithPanel="True" 
+                          ItemsSource="{Binding SnsTypes}"
+                          SelectedItem="{Binding SnsTypes[0]}"
+                          SelectionChanged="snsTypeComboBox_SelectionChanged">
+                </ComboBox>
+            </RelativePanel>
+            
+            <!--消息主体信息-->
+            <Pivot x:Name="rootPivot" 
+                   RelativePanel.Below="titleBarRelativePanel"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   RelativePanel.AlignRightWithPanel="True"
+                   SelectedIndex="1"
+                   SelectionChanged="rootPivot_SelectionChanged">
+                <PivotItem x:Name="mentionsPivotItem">
+                    <PivotItem.Header>
+                        <TextBlock>
+                            <Run Text="提到("/>
+                            <Run Text="Count"/>
+                            <Run Text=")"/>
+                        </TextBlock>
+                    </PivotItem.Header>
+
+                    <ListView x:Name="mentionListView" 
+                              ItemTemplate="{StaticResource NotificationMentionsItemDataTemplate}" 
+                              ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                              Style="{StaticResource StatusListViewStyleTemplate}"
+                              ItemsSource="{Binding MessageList}"
+                              ItemClick="notificationMessageList_ItemClick"/>
+                </PivotItem>
+
+                <PivotItem x:Name="commentPivotItem">
+                    <PivotItem.Header>
+                        <TextBlock>
+                            <Run Text="评论("/>
+                            <Run Text="Count"/>
+                            <Run Text=")"/>
+                        </TextBlock>
+                    </PivotItem.Header>
+
+                    <ListView x:Name="commentListView" 
+                              ItemTemplate="{StaticResource NotificationCommentLikeItemDataTemplate}" 
+                              ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                              Style="{StaticResource StatusListViewStyleTemplate}"
+                              ItemsSource="{Binding MessageList}"
+                              ItemClick="notificationMessageList_ItemClick"/>
+                </PivotItem>
+
+                <PivotItem x:Name="likePivotItem">
+                    <PivotItem.Header>
+                        <TextBlock>
+                            <Run Text="点赞("/>
+                            <Run Text="Count"/>
+                            <Run Text=")"/>
+                        </TextBlock>
+                    </PivotItem.Header>
+
+                    <ListView x:Name="likeListView" 
+                              ItemTemplate="{StaticResource NotificationCommentLikeItemDataTemplate}" 
+                              ItemContainerStyle="{StaticResource StatusListContainerStyleTemplate}"
+                              Style="{StaticResource StatusListViewStyleTemplate}"
+                              ItemsSource="{Binding MessageList}"
+                              ItemClick="notificationMessageList_ItemClick"/>
+                </PivotItem>
+            </Pivot>
+        </RelativePanel>
+    </Grid>
+</local:BasePage>

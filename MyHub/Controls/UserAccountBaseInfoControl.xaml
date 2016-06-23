@@ -1,0 +1,37 @@
+﻿<Page
+    x:Class="MyHub.Controls.UserAccountBaseInfoControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyHub.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{Binding}">
+        <RelativePanel>
+            <Image x:Name="userLogo"
+                   Source="{Binding LogoLargeUrl}" 
+                   Width="{StaticResource UserLogoLargeWidthHeight}" 
+                   Height="{StaticResource UserLogoLargeWidthHeight}" 
+                   RelativePanel.AlignTopWithPanel="True" 
+                   RelativePanel.AlignHorizontalCenterWithPanel="True"
+                   Margin="0,10,0,0"/>
+            <TextBlock Text="{Binding BasicUserInfo.Sns.Name}" 
+                       Style="{StaticResource SnsTypeNameTextBlockStyle}"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       Margin="10,10,0,0"/>
+            <TextBlock x:Name="userNameTextBlock" 
+                       Text="{Binding BasicUserInfo.NickName}" 
+                       FontSize="20"
+                       RelativePanel.Below="userLogo" 
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       Margin="0,10,0,0"/>
+            <TextBlock Text="{Binding Signature}" 
+                       FontSize="{StaticResource ContentTextFontSize}"
+                       Style="{StaticResource StatusContentTextBlockStyle}"
+                       RelativePanel.Below="userNameTextBlock" 
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       Margin="0,10,0,0"/>
+        </RelativePanel>
+    </Grid>
+</Page>
