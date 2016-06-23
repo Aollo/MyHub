@@ -15,14 +15,14 @@ namespace MyHub.Services
 
         public WeiboSnsDataService()
         {
-            InitEntities();
-            DoDynamicInit();
-
             _snsName = "新浪微博";
             _cultureInfo = new CultureInfo("en-US");//开始定义新浪微博时间的解析规则
             _format = "ddd MMM d HH:mm:ss zz00 yyyy";
 
             Lifecycle.AppRuntimeEnvironment.Instance.PropertyChanged += UserAccount_PropertyChanged;
+
+            InitEntities();
+            DoDynamicInit();
         }
 
         public Account Account { get; private set; }

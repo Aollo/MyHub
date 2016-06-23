@@ -19,15 +19,15 @@ namespace MyHub.Services
 
         public KaixinSnsDataService()
         {
-            InitEntities();
-            DoDynamicInit();
-
             _snsName = "开心网";
             _objtype = "records";
             _fields = "uid,name,gender,city,status,logo50,intro";
             _number = _count = -1;
 
             Lifecycle.AppRuntimeEnvironment.Instance.PropertyChanged += UserAccount_PropertyChanged;
+
+            InitEntities();
+            DoDynamicInit();
         }
 
         public Account Account { get; private set; }
